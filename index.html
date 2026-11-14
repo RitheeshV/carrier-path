@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a43">
+  <meta name="description" content="Career Path — college career development for students and teachers.">
+  <title>Career Path | College career development</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --navy: #102a43;
+      --navy-2: #193b56;
+      --blue: #2874a6;
+      --blue-light: #e8f3fa;
+      --mint: #dff3ea;
+      --green: #27785b;
+      --ink: #203449;
+      --muted: #748496;
+      --line: #e5ebf0;
+      --paper: #fff;
+      --canvas: #f4f7fa;
+      --amber: #a96816;
+      --shadow: 0 12px 34px #15314c0c;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; color: var(--ink); background: var(--canvas); }
+    button, input, select { font: inherit; }
+    button, select { cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #65a6d0; outline-offset: 2px; }
+    .app { display: grid; min-height: 100vh; grid-template-columns: 248px minmax(0, 1fr); }
+    .app[hidden], .login-screen[hidden] { display: none; }
+    .sidebar { position: sticky; top: 0; display: flex; height: 100vh; flex-direction: column; padding: 25px 17px 18px; color: #e8f0f6; background: var(--navy); }
+    .brand { display: flex; align-items: center; gap: 11px; padding: 0 8px; color: #fff; font-size: 19px; font-weight: 750; letter-spacing: -.7px; }
+    .brand-mark { display: grid; width: 35px; height: 35px; place-items: center; border-radius: 11px; color: var(--navy); background: #d9f1e7; font-size: 17px; font-weight: 850; }
+    .brand small { display: block; margin-top: 3px; color: #9eb4c6; font-size: 9px; font-weight: 500; letter-spacing: .45px; }
+    .college-label { margin: 34px 10px 11px; color: #91a8ba; font-size: 9px; font-weight: 750; letter-spacing: 1.4px; }
+    .portal-label { margin: 0 10px; color: #e4eff6; font-size: 12px; font-weight: 650; }
+    .sidebar-bottom { margin-top: auto; }
+    .demo-note { padding: 12px; border: 1px solid #ffffff1a; border-radius: 10px; color: #bbcad5; background: #ffffff09; font-size: 10px; line-height: 1.55; }
+    .demo-note strong { display: block; margin-bottom: 4px; color: #d6f1e4; font-size: 10px; }
+    .sidebar-user { display: flex; align-items: center; gap: 9px; margin-top: 15px; padding: 12px 5px 2px; border-top: 1px solid #ffffff1c; }
+    .avatar { display: grid; width: 31px; height: 31px; flex: 0 0 auto; place-items: center; border-radius: 50%; color: #245c78; background: #d8edf8; font-size: 11px; font-weight: 800; }
+    .sidebar-user strong { display: block; overflow: hidden; max-width: 150px; color: #f1f5f8; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .sidebar-user small { display: block; margin-top: 3px; color: #9db1c1; font-size: 9px; }
+    .main { min-width: 0; }
+    .topbar { position: sticky; top: 0; z-index: 2; display: flex; min-height: 62px; align-items: center; justify-content: space-between; gap: 15px; padding: 0 clamp(18px, 4vw, 48px); border-bottom: 1px solid var(--line); background: #ffffffed; backdrop-filter: blur(12px); }
+    .breadcrumb { color: var(--muted); font-size: 11px; }
+    .breadcrumb strong { color: var(--ink); font-weight: 650; }
+    .top-actions { display: flex; align-items: center; gap: 10px; }
+    .campus-pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border: 1px solid #dfece7; border-radius: 20px; color: var(--green); background: #f2faf6; font-size: 9px; font-weight: 700; }
+    .campus-pill i { width: 6px; height: 6px; border-radius: 50%; background: #46a77e; }
+    .logout-button { min-height: 32px; padding: 0 10px; border: 1px solid var(--line); border-radius: 7px; color: #53677a; background: white; font-size: 9px; font-weight: 700; }
+    .logout-button:hover { color: var(--navy); background: #f5f8fa; }
+    .page { width: min(1120px, 100%); margin: 0 auto; padding: 31px clamp(18px, 4vw, 48px) 25px; }
+    .welcome { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+    .eyebrow { margin: 0 0 8px; color: var(--blue); font-size: 9px; font-weight: 800; letter-spacing: 1.45px; }
+    h1 { margin: 0; color: var(--navy); font-size: clamp(24px, 3vw, 32px); font-weight: 730; letter-spacing: -1.1px; }
+    .welcome p:last-child { margin: 8px 0 0; color: var(--muted); font-size: 12px; }
+    .button { display: inline-flex; min-height: 36px; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; border: 0; border-radius: 8px; color: white; background: var(--blue); font-size: 10px; font-weight: 700; transition: background .15s, transform .15s; }
+    .button:hover { background: #1d5e8a; transform: translateY(-1px); }
+    .button.secondary { border: 1px solid var(--line); color: var(--ink); background: white; }
+    .button.secondary:hover { background: #f7fafc; }
+    .button.danger { color: #9b4545; background: #fff0ef; }
+    .hero { display: flex; min-height: 150px; align-items: center; justify-content: space-between; gap: 20px; overflow: hidden; padding: 23px 26px; border: 1px solid #dbe8f0; border-radius: 14px; background: linear-gradient(110deg, #e9f4f9, #f3f8fa 60%, #e8f4ef); }
+    .hero-copy { max-width: 560px; }
+    .hero-kicker { color: #4381a2; font-size: 9px; font-weight: 800; letter-spacing: 1.2px; }
+    .hero h2 { margin: 9px 0 6px; color: var(--navy); font-size: 20px; letter-spacing: -.35px; }
+    .hero p { margin: 0; color: #617589; font-size: 11px; line-height: 1.65; }
+    .hero-mark { display: grid; width: 84px; height: 84px; flex: 0 0 auto; place-items: center; border: 1px solid #cfe2e9; border-radius: 50%; color: #4283a0; background: #ffffffa6; font-size: 30px; }
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 15px 0; }
+    .stat, .panel { border: 1px solid var(--line); border-radius: 11px; background: var(--paper); box-shadow: var(--shadow); }
+    .stat { min-height: 92px; padding: 14px; }
+    .stat-label { color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: 1px; }
+    .stat strong { display: block; margin-top: 9px; color: var(--navy); font-size: 24px; font-weight: 750; letter-spacing: -.7px; }
+    .stat strong small { margin-left: 4px; color: var(--muted); font-size: 10px; font-weight: 550; letter-spacing: 0; }
+    .content-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(260px, .75fr); align-items: start; gap: 14px; }
+    .panel { padding: 18px; }
+    .panel + .panel { margin-top: 13px; }
+    .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
+    .panel-heading h2 { margin: 5px 0 0; color: var(--navy); font-size: 15px; letter-spacing: -.2px; }
+    .panel-kicker { margin: 0; color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: 1.1px; }
+    .panel-description { margin: -5px 0 15px; color: var(--muted); font-size: 11px; line-height: 1.55; }
+    .member-list, .steps, .student-list { display: grid; gap: 9px; }
+    .member, .student-card { display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid #edf1f4; border-radius: 9px; background: #fff; }
+    .member-copy { min-width: 0; flex: 1; }
+    .member-copy strong, .student-card strong { display: block; overflow: hidden; color: #30455a; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+    .member-copy small, .student-card small { display: block; overflow: hidden; margin-top: 4px; color: var(--muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .role-tag, .status-tag { display: inline-flex; flex: 0 0 auto; align-items: center; padding: 4px 7px; border-radius: 20px; color: #356d8d; background: #edf6fb; font-size: 9px; font-weight: 750; text-transform: capitalize; }
+    .role-tag.admin { color: #7259a1; background: #f2effa; }
+    .role-tag.teacher { color: #946325; background: #fbf3e7; }
+    .status-tag.inactive { color: #9a5353; background: #fff0ef; }
+    .student-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid #edf1f4; }
+    .student-row:last-child { border-bottom: 0; }
+    .student-meta { display: flex; align-items: center; gap: 9px; min-width: 0; }
+    .progress-info { text-align: right; }
+    .progress-info strong { display: block; color: var(--green); font-size: 11px; }
+    .progress-info small { display: block; margin-top: 4px; color: var(--muted); font-size: 9px; }
+    .track { overflow: hidden; height: 5px; margin-top: 8px; border-radius: 8px; background: #ebf0f3; }
+    .track span { display: block; height: 100%; border-radius: inherit; background: #57aa86; }
+    .step { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; align-items: start; gap: 9px; padding: 11px 0; border-bottom: 1px solid #edf1f4; }
+    .step:last-child { border-bottom: 0; }
+    .step-check { display: grid; width: 20px; height: 20px; place-items: center; border: 1px solid #d8e1e7; border-radius: 50%; color: white; background: white; font-size: 10px; }
+    .step.done .step-check { border-color: #49a27a; background: #49a27a; }
+    .step strong { color: #30455a; font-size: 11px; }
+    .step p { margin: 4px 0 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .step.done strong { color: #708090; text-decoration: line-through; }
+    .step button { min-height: 27px; padding: 0 8px; border: 1px solid var(--line); border-radius: 6px; color: var(--blue); background: white; font-size: 9px; font-weight: 700; }
+    .step.done button { color: var(--green); background: #f1faf5; }
+    .form { display: grid; gap: 10px; }
+    .form label { display: grid; gap: 5px; color: #596c7f; font-size: 10px; font-weight: 700; }
+    .form input, .form select { width: 100%; min-height: 38px; padding: 8px 10px; border: 1px solid #dfe7ed; border-radius: 7px; color: var(--ink); background: #fff; font-size: 11px; }
+    .form .button { justify-self: start; margin-top: 2px; }
+    .notice { margin: 0 0 12px; padding: 10px 11px; border: 1px solid #f0dfc7; border-radius: 8px; color: #805c2b; background: #fffaf1; font-size: 10px; line-height: 1.55; }
+    .invite-result { overflow-wrap: anywhere; margin-top: 10px; padding: 10px; border: 1px solid #d6e9df; border-radius: 8px; color: #285d48; background: #f1faf5; font-size: 10px; line-height: 1.6; }
+    .invite-result code { font-size: 11px; font-weight: 750; }
+    .select-student { max-width: 100%; min-height: 34px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); background: #fff; font-size: 10px; }
+    .empty { padding: 18px 10px; color: var(--muted); text-align: center; font-size: 10px; }
+    .footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 20px; padding: 12px 2px; color: #8795a3; font-size: 9px; }
+    .footer strong { color: #638099; letter-spacing: 1px; }
+    .toast { position: fixed; right: 20px; bottom: 20px; z-index: 5; max-width: min(360px, calc(100vw - 40px)); padding: 11px 15px; border-radius: 9px; color: white; background: #183c55; box-shadow: 0 10px 24px #102a4330; font-size: 10px; }
+    .login-screen { display: grid; min-height: 100vh; align-content: center; justify-items: center; padding: 28px 18px; background: radial-gradient(ellipse at 50% 30%, #e8f4f8 0, var(--canvas) 58%); }
+    .login-brand { display: flex; align-items: center; gap: 11px; margin-bottom: 22px; color: var(--navy); font-size: 20px; font-weight: 780; letter-spacing: -.5px; }
+    .login-card { width: min(430px, 100%); padding: 25px; border: 1px solid var(--line); border-radius: 15px; background: white; box-shadow: 0 18px 50px #173a5512; }
+    .login-card h1 { font-size: 23px; }
+    .login-copy { margin: 7px 0 18px; color: var(--muted); font-size: 11px; line-height: 1.55; }
+    .login-form { display: grid; gap: 12px; }
+    .login-form label { display: grid; gap: 6px; color: #596c7f; font-size: 10px; font-weight: 700; }
+    .login-form input, .login-form select { width: 100%; min-height: 39px; padding: 9px 10px; border: 1px solid #dfe7ed; border-radius: 7px; color: var(--ink); background: white; font-size: 11px; }
+    .login-form .button { min-height: 39px; margin-top: 2px; }
+    .credential-hint { margin: 0; padding: 10px 11px; border: 1px solid #e3edf2; border-radius: 8px; color: #536b7d; background: #f5fafc; font-size: 9px; line-height: 1.7; }
+    .credential-hint strong { color: #304b60; }
+    .login-error { margin: 0; color: #a13e3e; font-size: 10px; }
+    .login-demo-warning { max-width: 430px; margin: 12px 0 0; color: #78899a; font-size: 9px; line-height: 1.6; text-align: center; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
+    @media (max-width: 960px) {
+      .app { grid-template-columns: 210px minmax(0, 1fr); }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .content-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (max-width: 620px) {
+      .app { display: block; }
+      .sidebar { position: relative; width: 100%; height: auto; padding: 12px 14px; }
+      .brand { font-size: 16px; }
+      .brand-mark { width: 31px; height: 31px; }
+      .college-label, .sidebar-bottom { display: none; }
+      .portal-label { margin: 11px 8px 0; font-size: 10px; }
+      .topbar { min-height: 49px; padding: 0 16px; }
+      .campus-pill { padding: 6px 8px; font-size: 8px; }
+      .page { padding-top: 22px; }
+      .welcome { align-items: start; }
+      .welcome .button { align-self: center; padding: 0 9px; font-size: 9px; }
+      .hero { min-height: 130px; padding: 18px; }
+      .hero-mark { width: 57px; height: 57px; font-size: 22px; }
+      .stat { min-height: 80px; padding: 11px; }
+      .stat strong { font-size: 21px; }
+      .panel { padding: 14px; }
+      .footer { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="login-screen" id="login-screen">
+    <div class="login-brand"><span class="brand-mark">C</span>Career Path</div>
+    <section class="login-card" aria-labelledby="login-title">
+      <p class="eyebrow">COLLEGE CAREER HUB</p>
+      <h1 id="login-title">Sign in to your portal</h1>
+      <p class="login-copy">Sign in with the college administrator demo account.</p>
+      <form class="login-form" id="login-form">
+        <label for="login-email">Email address
+          <input id="login-email" name="email" type="email" autocomplete="username" required>
+        </label>
+        <label for="login-password">Password
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <p class="credential-hint"><strong>Admin demo login</strong><br>Email: admin@college.edu<br>Password: CareerPath@Admin2026!</p>
+        <p class="login-error" id="login-error" role="alert" hidden></p>
+        <button class="button" type="submit">Sign in <span aria-hidden="true">→</span></button>
+      </form>
+    </section>
+    <p class="login-demo-warning">Demo sign-in only: these sample credentials are public and are not secure authentication. Do not enter real passwords or student information.</p>
+  </main>
+  <div class="app" id="app-shell" hidden>
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">C</span><span>Career Path<small>COLLEGE CAREER HUB</small></span></div>
+      <div class="college-label">SIGNED-IN PORTAL</div>
+      <div class="portal-label" id="sidebar-portal"></div>
+      <div class="sidebar-bottom">
+        <div class="demo-note"><strong>Interactive project demo</strong>This static website stores sample changes in this browser only. It does not provide real accounts or secure access.</div>
+        <div class="sidebar-user"><span class="avatar" id="current-avatar">A</span><span><strong id="current-name">College Admin</strong><small id="current-role">Administrator</small></span></div>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="breadcrumb">College workspace <span aria-hidden="true">/</span> <strong id="breadcrumb-role">Admin portal</strong></div>
+        <div class="top-actions"><span class="campus-pill"><i></i>College workspace</span><button class="logout-button" id="logout-button" type="button">Sign out</button></div>
+      </header>
+      <section class="page" id="page" aria-live="polite"></section>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <script>
+    (() => {
+      "use strict";
+      const STORAGE_KEY = "career-path-college-demo-v4";
+      const roles = {
+        admin: { name: "College Admin", title: "Admin", greeting: "College overview", copy: "Manage your campus community and keep every career journey moving." },
+        teacher: { name: "Jordan Lee", title: "Teacher", greeting: "Teacher workspace", copy: "Support your students with a clear view of their goals and learning progress." },
+        student: { name: "Alex Morgan", title: "Student", greeting: "Your career journey", copy: "Build useful skills, track your progress, and take your next step with confidence." }
+      };
+      const adminCredentials = { email: "admin@college.edu", password: "CareerPath@Admin2026!" };
+      const initialState = {
+        members: [
+          { id: "m-admin-1", name: "College Admin", email: "admin@college.edu", role: "admin", active: true },
+          { id: "m-teacher-1", name: "Jordan Lee", email: "jordan@college.edu", role: "teacher", active: true },
+          { id: "m-student-1", name: "Alex Morgan", email: "alex@college.edu", role: "student", active: true, teacherId: "m-teacher-1", career: "Full Stack Developer", progress: 40, tasks: [false, true, false] },
+          { id: "m-student-2", name: "Sam Rivera", email: "sam@college.edu", role: "student", active: true, teacherId: "m-teacher-1", career: "Data Analyst", progress: 65, tasks: [true, true, false] },
+          { id: "m-student-3", name: "Taylor Kim", email: "taylor@college.edu", role: "student", active: true, teacherId: "m-teacher-1", career: "AI Engineer", progress: 20, tasks: [false, false, false] }
+        ],
+        invitations: [],
+        goals: [
+          { title: "JavaScript foundations", detail: "Practice variables, functions, and building a small interactive page.", hours: 4 },
+          { title: "Build a React interface", detail: "Create a reusable component and connect it to sample data.", hours: 6 },
+          { title: "Publish a portfolio project", detail: "Share a finished project and explain the decisions you made.", hours: 3 }
+        ]
+      };
+      let state = loadState();
+      let currentRole = null;
+      let currentMember = null;
+      let selectedStudentId = "m-student-1";
+      let toastTimer;
+      const page = document.getElementById("page");
+      const loginScreen = document.getElementById("login-screen");
+      const appShell = document.getElementById("app-shell");
+      const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[char]);
+
+      function loadState() {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (!saved) return structuredClone(initialState);
+          const parsed = JSON.parse(saved);
+          if (!Array.isArray(parsed.members) || !Array.isArray(parsed.invitations) || !Array.isArray(parsed.goals)) {
+            return structuredClone(initialState);
+          }
+          return parsed;
+        } catch {
+          return structuredClone(initialState);
+        }
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch {
+          showToast("Browser storage is unavailable. Changes will not be saved.");
+        }
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.hidden = false;
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => { toast.hidden = true; }, 2800);
+      }
+
+      function escapeRole(role) {
+        return escapeHtml(role.charAt(0).toUpperCase() + role.slice(1));
+      }
+
+      function roleTag(role) {
+        return `<span class="role-tag ${escapeHtml(role)}">${escapeRole(role)}</span>`;
+      }
+
+      function activeMembers(role) {
+        return state.members.filter((member) => member.active && (!role || member.role === role));
+      }
+
+      function getStudent(id) {
+        return state.members.find((member) => member.id === id && member.role === "student");
+      }
+
+      function signIn(event) {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const email = String(formData.get("email")).trim().toLowerCase();
+        const password = String(formData.get("password"));
+        const member = state.members.find((item) => item.email.toLowerCase() === email && item.role === "admin");
+        const error = document.getElementById("login-error");
+        if (email !== adminCredentials.email || password !== adminCredentials.password || !member || !member.active) {
+          error.textContent = member && !member.active
+            ? "This admin demo account is inactive."
+            : "The admin demo email or password is incorrect.";
+          error.hidden = false;
+          return;
+        }
+        error.hidden = true;
+        currentRole = "admin";
+        currentMember = member;
+        document.getElementById("login-password").value = "";
+        loginScreen.hidden = true;
+        appShell.hidden = false;
+        render();
+      }
+
+      function signOut() {
+        currentRole = null;
+        currentMember = null;
+        appShell.hidden = true;
+        loginScreen.hidden = false;
+        document.getElementById("login-form").reset();
+        document.getElementById("login-error").hidden = true;
+      }
+
+      function render() {
+        const role = roles[currentRole];
+        role.name = currentMember.name;
+        document.getElementById("current-avatar").textContent = currentMember.name.slice(0, 1).toUpperCase();
+        document.getElementById("current-name").textContent = currentMember.name;
+        document.getElementById("current-role").textContent = role.title;
+        document.getElementById("sidebar-portal").textContent = `${role.title} portal`;
+        document.getElementById("breadcrumb-role").textContent = `${role.title} portal`;
+        if (currentRole === "admin") renderAdmin();
+        else if (currentRole === "teacher") renderTeacher();
+        else renderStudent();
+      }
+
+      function renderWelcome(role, action = "") {
+        return `<div class="welcome"><div><p class="eyebrow">CAREER PATH · COLLEGE</p><h1>${escapeHtml(role.greeting)}</h1><p>${escapeHtml(role.copy)}</p></div>${action}</div>`;
+      }
+
+      function renderStats(stats) {
+        return `<section class="stats" aria-label="Portal summary">${stats.map((item) => `
+          <article class="stat"><span class="stat-label">${escapeHtml(item.label)}</span><strong>${escapeHtml(item.value)}<small>${escapeHtml(item.unit || "")}</small></strong></article>
+        `).join("")}</section>`;
+      }
+
+      function renderHero(title, description, mark) {
+        return `<section class="hero"><div class="hero-copy"><span class="hero-kicker">ONE COLLEGE · ONE CAREER COMMUNITY</span><h2>${escapeHtml(title)}</h2><p>${escapeHtml(description)}</p></div><div class="hero-mark" aria-hidden="true">${mark}</div></section>`;
+      }
+
+      function renderMember(member, allowToggle = false) {
+        const inactive = member.active ? "" : '<span class="status-tag inactive">Inactive</span>';
+        const toggle = allowToggle && member.role !== "admin"
+          ? `<button class="button secondary member-toggle" data-member-id="${escapeHtml(member.id)}" type="button">${member.active ? "Deactivate" : "Reactivate"}</button>`
+          : "";
+        return `<article class="member"><span class="avatar" aria-hidden="true">${escapeHtml(member.name.slice(0, 1).toUpperCase())}</span><div class="member-copy"><strong>${escapeHtml(member.name)}</strong><small>${escapeHtml(member.email)}</small></div>${roleTag(member.role)}${inactive}${toggle}</article>`;
+      }
+
+      function renderAdmin() {
+        const students = activeMembers("student");
+        const teachers = activeMembers("teacher");
+        const active = activeMembers().length;
+        const invitations = state.invitations.filter((invite) => invite.status === "pending");
+        page.innerHTML = `
+          ${renderWelcome(roles.admin, '<button class="button" type="button" data-scroll="invite-panel">＋ Invite a member</button>')}
+          ${renderHero("A stronger start for every student.", "Bring administrators, teachers, and students together around practical career goals and steady progress.", "⌂")}
+          ${renderStats([{ label: "ACTIVE MEMBERS", value: active, unit: "people" }, { label: "STUDENTS", value: students.length, unit: "students" }, { label: "TEACHERS", value: teachers.length, unit: "teachers" }, { label: "PENDING INVITES", value: invitations.length, unit: "invites" }])}
+          <div class="content-grid">
+            <section class="panel"><div class="panel-heading"><div><p class="panel-kicker">COLLEGE COMMUNITY</p><h2>Members</h2></div><span class="role-tag">${active} active</span></div>
+              <p class="notice">Demo only: these sample member records are saved in this browser. There are no real accounts, passwords, or server-side access controls.</p>
+              <div class="member-list">${state.members.length ? state.members.map((member) => renderMember(member, true)).join("") : '<p class="empty">No members yet. Invite a teacher or student to get started.</p>'}</div>
+            </section>
+            <aside>
+              <section class="panel" id="invite-panel"><div class="panel-heading"><div><p class="panel-kicker">GROW YOUR COMMUNITY</p><h2>Invite a member</h2></div></div>
+                <p class="panel-description">Add a teacher or student to this local project demo. The generated code is for demonstration only.</p>
+                <form class="form" id="invite-form">
+                  <label for="invite-name">Name<input id="invite-name" name="name" maxlength="80" required placeholder="e.g. Jamie Patel"></label>
+                  <label for="invite-email">College email<input id="invite-email" name="email" type="email" maxlength="254" required placeholder="name@college.edu"></label>
+                  <label for="invite-role">College role<select id="invite-role" name="role"><option value="student">Student</option><option value="teacher">Teacher</option></select></label>
+                  <button class="button" type="submit">Create demo invitation <span aria-hidden="true">→</span></button>
+                </form>
+                <div id="invite-result" aria-live="polite"></div>
+              </section>
+              <section class="panel"><div class="panel-heading"><div><p class="panel-kicker">INVITATION ACTIVITY</p><h2>Recent invites</h2></div></div>
+                <div class="member-list">${state.invitations.length ? state.invitations.slice(-4).reverse().map((invite) => `<article class="member"><div class="member-copy"><strong>${escapeHtml(invite.name)}</strong><small>${escapeHtml(invite.email)}</small></div>${roleTag(invite.role)}<span class="status-tag">${escapeHtml(invite.status)}</span></article>`).join("") : '<p class="empty">No invitations yet.</p>'}</div>
+              </section>
+            </aside>
+          </div>
+          ${renderFooter()}
+        `;
+        document.getElementById("invite-form").addEventListener("submit", createInvitation);
+        page.querySelectorAll(".member-toggle").forEach((button) => button.addEventListener("click", () => toggleMember(button.dataset.memberId)));
+        page.querySelector("[data-scroll]").addEventListener("click", () => document.getElementById("invite-panel").scrollIntoView({ behavior: "smooth" }));
+      }
+
+      function createInvitation(event) {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const email = String(formData.get("email")).trim().toLowerCase();
+        if (state.members.some((member) => member.email.toLowerCase() === email) ||
+            state.invitations.some((invite) => invite.email.toLowerCase() === email && invite.status === "pending")) {
+          showToast("A member or pending invitation already uses that email.");
+          return;
+        }
+        const name = String(formData.get("name")).trim();
+        const role = String(formData.get("role"));
+        const inviteCode = `CP-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+        const invitation = { id: crypto.randomUUID(), name, email, role, code: inviteCode, status: "pending" };
+        state.invitations.push(invitation);
+        state.members.push({ id: crypto.randomUUID(), name, email, role, active: true, progress: 0, tasks: [false, false, false] });
+        saveState();
+        renderAdmin();
+        const result = document.getElementById("invite-result");
+        result.innerHTML = `<div class="invite-result"><strong>Demo invitation created.</strong><br>Code: <code>${escapeHtml(inviteCode)}</code><br>This is a sample code only; no email was sent and it does not grant secure access.</div>`;
+        showToast("Demo member added to the college list.");
+      }
+
+      function toggleMember(id) {
+        const member = state.members.find((item) => item.id === id);
+        if (!member) return;
+        member.active = !member.active;
+        saveState();
+        renderAdmin();
+        showToast(`${member.name} marked ${member.active ? "active" : "inactive"} in the demo.`);
+      }
+
+      function renderTeacher() {
+        const students = activeMembers("student");
+        const average = students.length ? Math.round(students.reduce((sum, student) => sum + student.progress, 0) / students.length) : 0;
+        const selectOptions = students.map((student) => `<option value="${escapeHtml(student.id)}" ${student.id === selectedStudentId ? "selected" : ""}>${escapeHtml(student.name)}</option>`).join("");
+        const focused = getStudent(selectedStudentId) || students[0];
+        if (focused && focused.id !== selectedStudentId) selectedStudentId = focused.id;
+        page.innerHTML = `
+          ${renderWelcome(roles.teacher)}
+          ${renderHero("Guide the next generation of talent.", "Review student goals, celebrate the skills they are building, and help them make their next step achievable.", "✦")}
+          ${renderStats([{ label: "MY STUDENTS", value: students.length, unit: "students" }, { label: "AVERAGE PROGRESS", value: average, unit: "%" }, { label: "CAREER GOALS", value: new Set(students.map((student) => student.career || "Undecided")).size, unit: "paths" }, { label: "COLLEGE ROLE", value: "Teacher", unit: "" }])}
+          <div class="content-grid">
+            <section class="panel"><div class="panel-heading"><div><p class="panel-kicker">STUDENT ROSTER</p><h2>Career progress</h2></div><span class="role-tag teacher">${students.length} students</span></div>
+              <p class="panel-description">A quick overview of each student's current career direction and roadmap progress.</p>
+              <div class="student-list">${students.length ? students.map((student) => `<article class="student-card"><span class="avatar">${escapeHtml(student.name.slice(0, 1).toUpperCase())}</span><div class="member-copy"><strong>${escapeHtml(student.name)}</strong><small>${escapeHtml(student.career || "Career goal not set")}</small><div class="track" aria-label="${student.progress}% roadmap progress"><span style="width:${Math.max(0, Math.min(100, Number(student.progress) || 0))}%"></span></div></div><div class="progress-info"><strong>${escapeHtml(student.progress)}%</strong><small>roadmap</small></div></article>`).join("") : '<p class="empty">There are no active students in this demo yet.</p>'}</div>
+            </section>
+            <aside>
+              <section class="panel"><div class="panel-heading"><div><p class="panel-kicker">STUDENT SNAPSHOT</p><h2>Career focus</h2></div></div>
+                ${students.length ? `<label class="sr-only" for="student-select">Choose a student</label><select class="select-student" id="student-select">${selectOptions}</select><div id="student-detail"></div>` : '<p class="empty">Add students from the Admin demo.</p>'}
+              </section>
+              <section class="panel"><div class="panel-heading"><div><p class="panel-kicker">TEACHER TOOLKIT</p><h2>Helpful check-ins</h2></div></div><div class="steps"><div class="step"><span class="step-check">1</span><div><strong>Set a small weekly goal</strong><p>Help students turn a career interest into one achievable practice task.</p></div></div><div class="step"><span class="step-check">2</span><div><strong>Review progress together</strong><p>Discuss what felt easy, what felt difficult, and what to try next.</p></div></div><div class="step"><span class="step-check">3</span><div><strong>Celebrate completed work</strong><p>Encourage students to keep a record of projects and skills.</p></div></div></div></section>
+            </aside>
+          </div>
+          ${renderFooter()}
+        `;
+        if (students.length) {
+          document.getElementById("student-select").addEventListener("change", (event) => {
+            selectedStudentId = event.target.value;
+            renderStudentDetail();
+          });
+          renderStudentDetail(focused);
+        }
+      }
+
+      function renderStudentDetail(student = getStudent(selectedStudentId)) {
+        const target = document.getElementById("student-detail");
+        if (!target || !student) return;
+        target.innerHTML = `<div style="padding-top:14px"><p class="panel-kicker">CURRENT GOAL</p><p style="margin:7px 0;color:var(--navy);font-size:13px;font-weight:700">${escapeHtml(student.career || "Career goal not set")}</p><p style="margin:0;color:var(--muted);font-size:9px;line-height:1.55">This sample profile contains ${escapeHtml((student.tasks || []).filter(Boolean).length)} completed roadmap steps. Use the student portal to change goals and track progress.</p></div>`;
+      }
+
+      function renderStudent() {
+        const student = getStudent(currentMember.id);
+        if (!student) {
+          page.innerHTML = `${renderWelcome(roles.student)}<section class="panel empty">No student demo profile is available yet. Use Admin to add a demo student.</section>${renderFooter()}`;
+          return;
+        }
+        roles.student.name = student.name;
+        const tasks = student.tasks || [false, false, false];
+        const done = tasks.filter(Boolean).length;
+        student.progress = Math.round(done / tasks.length * 100);
+        const career = student.career || "Full Stack Developer";
+        const careerOptions = ["Full Stack Developer", "Data Analyst", "AI Engineer"];
+        page.innerHTML = `
+          ${renderWelcome(roles.student, '<button class="button secondary" type="button" id="reset-demo">↻ Reset demo</button>')}
+          ${renderHero(career, "A personalized sample roadmap helps you turn your career interest into practical skills and real projects.", "↗")}
+          ${renderStats([{ label: "ROADMAP PROGRESS", value: student.progress, unit: "%" }, { label: "STEPS COMPLETED", value: done, unit: `of ${tasks.length}` }, { label: "HOURS THIS WEEK", value: done * 2, unit: "hours" }, { label: "CAREER MATCH", value: Math.min(96, 65 + done * 10), unit: "%" }])}
+          <div class="content-grid">
+            <section class="panel"><div class="panel-heading"><div><p class="panel-kicker">YOUR PLAN · LEARN BY DOING</p><h2>Career roadmap</h2></div><span class="role-tag">${escapeHtml(student.progress)}% complete</span></div>
+              <p class="panel-description">Mark a step complete as you work through your learning journey. Your progress is saved in this browser.</p>
+              <div class="steps">${state.goals.map((goal, index) => `<article class="step ${tasks[index] ? "done" : ""}"><span class="step-check">${tasks[index] ? "✓" : index + 1}</span><div><strong>${escapeHtml(goal.title)}</strong><p>${escapeHtml(goal.detail)} · ${escapeHtml(goal.hours)} hours</p></div><button type="button" class="task-toggle" data-index="${index}" aria-pressed="${Boolean(tasks[index])}">${tasks[index] ? "Completed" : "Mark done"}</button></article>`).join("")}</div>
+            </section>
+            <aside>
+              <section class="panel"><div class="panel-heading"><div><p class="panel-kicker">YOUR DIRECTION</p><h2>Career goal</h2></div></div>
+                <form class="form" id="career-form"><label for="career-choice">What career interests you?<select id="career-choice" name="career">${careerOptions.map((option) => `<option value="${escapeHtml(option)}" ${career === option ? "selected" : ""}>${escapeHtml(option)}</option>`).join("")}</select></label><button class="button" type="submit">Save career goal</button></form>
+              </section>
+              <section class="panel"><div class="panel-heading"><div><p class="panel-kicker">YOUR SKILLS</p><h2>Starting strengths</h2></div></div><div class="steps"><div class="step"><span class="step-check">✓</span><div><strong>Python</strong><p>Practice with a small project.</p></div></div><div class="step"><span class="step-check">✓</span><div><strong>SQL</strong><p>Use data to answer questions.</p></div></div><div class="step"><span class="step-check">✓</span><div><strong>Communication</strong><p>Share what you learn with confidence.</p></div></div></div></section>
+            </aside>
+          </div>
+          ${renderFooter()}
+        `;
+        page.querySelectorAll(".task-toggle").forEach((button) => button.addEventListener("click", () => toggleTask(Number(button.dataset.index))));
+        document.getElementById("career-form").addEventListener("submit", saveCareer);
+        document.getElementById("reset-demo").addEventListener("click", resetDemo);
+        saveState();
+      }
+
+      function toggleTask(index) {
+        const student = getStudent(currentMember.id);
+        if (!student || index < 0 || index >= state.goals.length) return;
+        student.tasks ||= [false, false, false];
+        student.tasks[index] = !student.tasks[index];
+        student.progress = Math.round(student.tasks.filter(Boolean).length / state.goals.length * 100);
+        saveState();
+        renderStudent();
+        showToast(student.tasks[index] ? "Roadmap step completed. Nice work!" : "Roadmap step moved back to your plan.");
+      }
+
+      function saveCareer(event) {
+        event.preventDefault();
+        const student = getStudent(currentMember.id);
+        const formData = new FormData(event.currentTarget);
+        if (!student) return;
+        student.career = String(formData.get("career"));
+        saveState();
+        renderStudent();
+        showToast("Your career goal has been saved in this browser.");
+      }
+
+      function resetDemo() {
+        state = structuredClone(initialState);
+        currentMember = state.members.find((member) => member.id === currentMember.id);
+        selectedStudentId = "m-student-1";
+        saveState();
+        renderStudent();
+        showToast("Sample data restored.");
+      }
+
+      function renderFooter() {
+        return `<footer class="footer"><strong>CAREER PATH · COLLEGE</strong><span>Explore a goal. Build a skill. Take the next step.</span></footer>`;
+      }
+
+      document.getElementById("login-form").addEventListener("submit", signIn);
+      document.getElementById("logout-button").addEventListener("click", signOut);
+    })();
+  </script>
+</body>
+</html>
